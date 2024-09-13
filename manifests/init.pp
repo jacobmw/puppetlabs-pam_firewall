@@ -24,7 +24,7 @@
 #   this to false; if you purge unknown firewall rules, set `ignore_foreign=true`
 #   on these chains so Kubernetes rules aren't removed.
 class pam_firewall (
-  Array[String] $cluster_nodes = [$::ipaddress],
+  Array[String] $cluster_nodes = $facts['networking']['ip'],
   Array[Variant[String, Integer]] $app_ports = [80, 443, 8000, 9001],
   String $pod_subnet = '10.32.0.0/22',
   String $service_subnet = '10.96.0.0/22',
@@ -60,66 +60,66 @@ class pam_firewall (
 
   # Avoid purging Kubernetes chains.
   firewallchain { [
-    'CNI-HOSTPORT-MASQ:nat:IPv4',
-    'CNI-HOSTPORT-SETMARK:nat:IPv4',
-    'DOCKER-ISOLATION-STAGE-1:filter:IPv4',
-    'DOCKER-ISOLATION-STAGE-2:filter:IPv4',
-    'DOCKER-USER:filter:IPv4',
-    'DOCKER:filter:IPv4',
-    'DOCKER:nat:IPv4',
-    'KUBE-FIREWALL:filter:IPv4',
-    'KUBE-FIREWALL:filter:IPv6',
-    'KUBE-FIREWALL:nat:IPv4',
-    'KUBE-FIREWALL:nat:IPv6',
-    'KUBE-FORWARD:filter:IPv4',
-    'KUBE-FORWARD:filter:IPv6',
-    'KUBE-IPVS-FILTER:filter:IPv4',
-    'KUBE-IPVS-FILTER:filter:IPv6',
-    'KUBE-KUBELET-CANARY:filter:IPv4',
-    'KUBE-KUBELET-CANARY:filter:IPv6',
-    'KUBE-KUBELET-CANARY:mangle:IPv4',
-    'KUBE-KUBELET-CANARY:nat:IPv4',
-    'KUBE-LOAD-BALANCER:nat:IPv4',
-    'KUBE-LOAD-BALANCER:nat:IPv6',
-    'KUBE-MARK-DROP:nat:IPv4',
-    'KUBE-MARK-DROP:nat:IPv6',
-    'KUBE-MARK-MASQ:nat:IPv4',
-    'KUBE-MARK-MASQ:nat:IPv6',
-    'KUBE-NODE-PORT:filter:IPv4',
-    'KUBE-NODE-PORT:filter:IPv6',
-    'KUBE-NODE-PORT:nat:IPv4',
-    'KUBE-NODE-PORT:nat:IPv6',
-    'KUBE-POSTROUTING:nat:IPv4',
-    'KUBE-POSTROUTING:nat:IPv6',
-    'KUBE-PROXY-FIREWALL:filter:IPv4',
-    'KUBE-PROXY-FIREWALL:filter:IPv6',
-    'KUBE-SERVICES:nat:IPv4',
-    'KUBE-SERVICES:nat:IPv6',
-    'KUBE-SOURCE-RANGES-FIREWALL:filter:IPv4',
-    'KUBE-SOURCE-RANGES-FIREWALL:filter:IPv6',
-    # Weave chains
-    'WEAVE-CANARY:filter:IPv4',
-    'WEAVE-CANARY:mangle:IPv4',
-    'WEAVE-CANARY:nat:IPv4',
-    'WEAVE-IPSEC-IN-MARK:mangle:IPv4',
-    'WEAVE-IPSEC-IN:filter:IPv4',
-    'WEAVE-IPSEC-IN:mangle:IPv4',
-    'WEAVE-IPSEC-OUT-MARK:mangle:IPv4',
-    'WEAVE-IPSEC-OUT:mangle:IPv4',
-    'WEAVE-NPC-DEFAULT:filter:IPv4',
-    'WEAVE-NPC-EGRESS-ACCEPT:filter:IPv4',
-    'WEAVE-NPC-EGRESS-CUSTOM:filter:IPv4',
-    'WEAVE-NPC-EGRESS-DEFAULT:filter:IPv4',
-    'WEAVE-NPC-EGRESS:filter:IPv4',
-    'WEAVE-NPC-INGRESS:filter:IPv4',
-    'WEAVE-NPC:filter:IPv4',
-    'WEAVE:nat:IPv4',
-    # Flannel chains
-    'FLANNEL-FWD:filter:IPv4',
-    'FLANNEL-POSTRTG:nat:IPv4',
+      'CNI-HOSTPORT-MASQ:nat:IPv4',
+      'CNI-HOSTPORT-SETMARK:nat:IPv4',
+      'DOCKER-ISOLATION-STAGE-1:filter:IPv4',
+      'DOCKER-ISOLATION-STAGE-2:filter:IPv4',
+      'DOCKER-USER:filter:IPv4',
+      'DOCKER:filter:IPv4',
+      'DOCKER:nat:IPv4',
+      'KUBE-FIREWALL:filter:IPv4',
+      'KUBE-FIREWALL:filter:IPv6',
+      'KUBE-FIREWALL:nat:IPv4',
+      'KUBE-FIREWALL:nat:IPv6',
+      'KUBE-FORWARD:filter:IPv4',
+      'KUBE-FORWARD:filter:IPv6',
+      'KUBE-IPVS-FILTER:filter:IPv4',
+      'KUBE-IPVS-FILTER:filter:IPv6',
+      'KUBE-KUBELET-CANARY:filter:IPv4',
+      'KUBE-KUBELET-CANARY:filter:IPv6',
+      'KUBE-KUBELET-CANARY:mangle:IPv4',
+      'KUBE-KUBELET-CANARY:nat:IPv4',
+      'KUBE-LOAD-BALANCER:nat:IPv4',
+      'KUBE-LOAD-BALANCER:nat:IPv6',
+      'KUBE-MARK-DROP:nat:IPv4',
+      'KUBE-MARK-DROP:nat:IPv6',
+      'KUBE-MARK-MASQ:nat:IPv4',
+      'KUBE-MARK-MASQ:nat:IPv6',
+      'KUBE-NODE-PORT:filter:IPv4',
+      'KUBE-NODE-PORT:filter:IPv6',
+      'KUBE-NODE-PORT:nat:IPv4',
+      'KUBE-NODE-PORT:nat:IPv6',
+      'KUBE-POSTROUTING:nat:IPv4',
+      'KUBE-POSTROUTING:nat:IPv6',
+      'KUBE-PROXY-FIREWALL:filter:IPv4',
+      'KUBE-PROXY-FIREWALL:filter:IPv6',
+      'KUBE-SERVICES:nat:IPv4',
+      'KUBE-SERVICES:nat:IPv6',
+      'KUBE-SOURCE-RANGES-FIREWALL:filter:IPv4',
+      'KUBE-SOURCE-RANGES-FIREWALL:filter:IPv6',
+      # Weave chains
+      'WEAVE-CANARY:filter:IPv4',
+      'WEAVE-CANARY:mangle:IPv4',
+      'WEAVE-CANARY:nat:IPv4',
+      'WEAVE-IPSEC-IN-MARK:mangle:IPv4',
+      'WEAVE-IPSEC-IN:filter:IPv4',
+      'WEAVE-IPSEC-IN:mangle:IPv4',
+      'WEAVE-IPSEC-OUT-MARK:mangle:IPv4',
+      'WEAVE-IPSEC-OUT:mangle:IPv4',
+      'WEAVE-NPC-DEFAULT:filter:IPv4',
+      'WEAVE-NPC-EGRESS-ACCEPT:filter:IPv4',
+      'WEAVE-NPC-EGRESS-CUSTOM:filter:IPv4',
+      'WEAVE-NPC-EGRESS-DEFAULT:filter:IPv4',
+      'WEAVE-NPC-EGRESS:filter:IPv4',
+      'WEAVE-NPC-INGRESS:filter:IPv4',
+      'WEAVE-NPC:filter:IPv4',
+      'WEAVE:nat:IPv4',
+      # Flannel chains
+      'FLANNEL-FWD:filter:IPv4',
+      'FLANNEL-POSTRTG:nat:IPv4',
     ]:
-    ensure => present,
-    purge  => false,
+      ensure => present,
+      purge  => false,
   }
 
   # Rules for external services.
@@ -127,21 +127,21 @@ class pam_firewall (
     ensure => present,
     dport  => 8800,
     proto  => 'tcp',
-    action => 'accept',
+    jump   => 'ACCEPT',
   }
 
   firewall { '110 allow tcp app ports':
     ensure => present,
     dport  => $app_ports,
     proto  => 'tcp',
-    action => 'accept',
+    jump   => 'ACCEPT',
   }
 
   firewall { '110 allow tcp port 6443 for Kubernetes API':
     ensure => present,
     dport  => 6443,
     proto  => 'tcp',
-    action => 'accept',
+    jump   => 'ACCEPT',
   }
 
   # Rules for intra-cluster communication
@@ -151,7 +151,7 @@ class pam_firewall (
       source => $node,
       dport  => [2379, 2380],
       proto  => 'tcp',
-      action => 'accept',
+      jump   => 'ACCEPT',
     }
 
     firewall { "110 allow udp port 8472 from ${node} for Flannel":
@@ -159,7 +159,7 @@ class pam_firewall (
       source => $node,
       dport  => 8472,
       proto  => 'udp',
-      action => 'accept',
+      jump   => 'ACCEPT',
     }
 
     firewall { "110 allow tcp port 6783 from ${node} for Weave":
@@ -167,7 +167,7 @@ class pam_firewall (
       source => $node,
       dport  => 6783,
       proto  => 'tcp',
-      action => 'accept',
+      jump   => 'ACCEPT',
     }
 
     firewall { "110 allow udp ports 6783-6784 from ${node} for Weave":
@@ -175,7 +175,7 @@ class pam_firewall (
       source => $node,
       dport  => [6783, 6784],
       proto  => 'udp',
-      action => 'accept',
+      jump   => 'ACCEPT',
     }
 
     firewall { "110 allow tcp port 10250 from ${node} for Kubelet":
@@ -183,7 +183,7 @@ class pam_firewall (
       source => $node,
       dport  => 10250,
       proto  => 'tcp',
-      action => 'accept',
+      jump   => 'ACCEPT',
     }
   }
 
@@ -192,13 +192,13 @@ class pam_firewall (
     ensure => present,
     source => $pod_subnet,
     proto  => 'all',
-    action => 'accept',
+    jump   => 'ACCEPT',
   }
 
   firewall { '110 allow service network':
     ensure => present,
     source => $service_subnet,
     proto  => 'all',
-    action => 'accept',
+    jump   => 'ACCEPT',
   }
 }
